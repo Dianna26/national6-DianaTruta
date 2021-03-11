@@ -33,6 +33,12 @@ function renderArticles(articleList) {
   for (const articleData of articleList) {
     console.log(articleData);
     renderArticle(articleData);
+
+    // fetch("https://simple-json-server-scit.herokuapp.com/comments?postId=" + articleData)
+  
+    // .then(handleFetchResponse)
+    
+    // .then(useJSONResponse);
   }
 }
 

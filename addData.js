@@ -1,7 +1,6 @@
 console.log("JavaScript - AJAX");
 console.log("Create Read Update Delete  - CRUD");
 console.log("CRUD Operation - Create step");
-
 document
   .getElementById("add-article-button")
   .addEventListener("click", function () {
@@ -11,7 +10,6 @@ document
 
     const articleContent = document.getElementById("article-content").value;
     console.log("articleContent", articleContent);
-
 
     if (articleTitle && articleContent) {
       const payload = {
