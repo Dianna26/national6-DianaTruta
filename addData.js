@@ -1,66 +1,49 @@
 console.log("JavaScript - AJAX");
-console.log("CRUD Operation - Read");
-// The scope of this lesson is to fetch some data from a server and use it to dynamically render data to the user
-// We show the data to the user by creating new html elements and ad them to the existing html objects
+console.log("Create Read Update Delete  - CRUD");
+console.log("CRUD Operation - Create step");
 
-// "articleListHtml" will hold the new elements we will create for showing data
-// we need an existing reference so we can bind to it the new elements
-const articleListHtml = document.querySelector(".article-list");
+// in this course we attempt to add new data on the server using its API
+// in order for us to understand how the server work we need to take a look at the library from which the server is built
+// our server is built with "JSON Server" and its documentation is "https://github.com/typicode/json-server"
+// our main server page can be found at "https://simple-json-server-scit.herokuapp.com/"
 
-// we will get/fetch the data when user click on a button
-document.getElementById("get-data").addEventListener("click", getData);
+// for us to put data on the server we need to wait for the user do click on add button
+document
+  .getElementById("add-article-button")
+  .addEventListener("click", function () {
+    // in order de get input from the user we use "input" tag in the html file
+    // here in JS file we target those inputs and get the values ad the time of user click on add button
 
-function getData() {
-  // "fetch" is a JavaScript function that tells the browser the make a request the specified address in the argument
-  fetch("https://simple-json-server-scit.herokuapp.com/posts")
-    // "this .then" is responsible for linking a callback function to the event trigger by the browser when the server responds back
-    .then(handleFetchResponse)
-    // "this .then" is responsible for linking a callback function to the event trigger by the parser of the body of the response
-    // we need to parse the response so we can transform it from a string in form of a JSON to an actual JavaScript value, which in this case is a list of objects
-    .then(useJSONResponse);
-}
+    const articleTitle = document.getElementById("article-title").value;
+    console.log("articleTitle", articleTitle);
 
-// because "handleFetchResponse" is used as a callback function in the first then of "fetch" the parameter will be the response from the servers
-function handleFetchResponse(response) {
-  console.log("response", response);
-  // .json() is responsible for parsing in an asynchronous way the body of the server response, from a JSON string to a JavaScript value
-  return response.json();
-}
+    const articleContent = document.getElementById("article-content").value;
+    console.log("articleContent", articleContent);
 
-// because  "useJSONResponse" is used in the second then of "fetch" the parameter will be the actual JavaScript value parsed from the body of the server
-// only in this function we can actually use the data to render dynamically something
-function useJSONResponse(json) {
-  console.log(json);
+    // we need this condition so that we don't send null values on the server
+    if (articleTitle && articleContent) {
+      const payload = {
+        title: articleTitle,
+        content: articleContent,
+      };
 
-  // by calling "renderArticles" we will render to page the articles from the server
-  renderArticles(json);
-}
+      console.log("Payload:", payload);
+      console.log("Payload Text:", JSON.stringify(payload));
 
-function renderArticles(articleList) {
-  // we need to remove the "No data" text in our html list container
-  articleListHtml.innerText = "";
+      // "fetch" can be use for getting data from server as well as sending data to the server
+      // when we make request to a server can use on of these methods: GET, POST, PATCH, PUT, DELETE
+      // by default "fetch" is using GET method
+      // in this case because we need to send data as well as creating a new article we need to use the POST method
+      // in addition to the url argument we need to specify the request object as well
+      // the acutal data the we want to send to the server we must put it into the body key of the request object
+      // because we can only send text over http we need to transform the JavaScript values into a string by using JSON.stringify
 
-  // the server responds with a list of objects
-  // every object represents a article
-  // every article has the same structure (id, title, content)
-  for (const articleData of articleList) {
-    console.log(articleData);
-    renderArticle(articleData);
-  }
-}
-
-function renderArticle(articleData) {
-  const article = document.createElement("div");
-  const articleTitle = document.createElement("h3");
-  const articleContent = document.createElement("p");
-
-  article.appendChild(articleTitle);
-  article.appendChild(articleContent);
-
-  articleListHtml.appendChild(article);
-
-  // after creating the necessary html structure for a article items, we need to populated with data
-  // we use the "articleData" as data source
-  articleTitle.innerText = articleData.title;
-  articleContent.innerText = articleData.content;
-}
+      fetch("https://simple-json-server-scit.herokuapp.com/posts", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload), // body data type must match "Content-Type" header
+      }).then(getData);
+    }
+  });
