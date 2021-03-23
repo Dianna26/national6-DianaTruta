@@ -9,10 +9,10 @@ document.getElementById("add-button").addEventListener("click", function () {
 
 function saveData(data){
     const input = document.getElementById("input").value;
-    if (data.todo.length === 0){
+    if (Object.keys(data).length === 0) {
         postMethod(input);
     } else {
-        putMethod(data.todo, input);
+        putMethod(data.todo, input, false);
     }
     
 }
@@ -36,14 +36,15 @@ function postMethod(value) {
     }).then(getMethod);
 }
 
-function putMethod(oldData, newData) {
+function putMethod(oldData, newData, checked) {
+    oldData.push({
+        checked: checked,
+        item: newData
+    })
+
     const payload = {
         id: "dtruta",
-        todo: [{
-            checked: false,
-            item: newData
-        }]
-
+        todo: oldData
     }
     
     fetch(`https://simple-json-server-scit.herokuapp.com/todo/dtruta`, {
@@ -70,8 +71,13 @@ function getMethod() {
 const todoListHtml = document.querySelector("#to-do-list");
 
 function renderToDoList(article) {
+    if (Object.keys(article).length === 0) {
+        return;
+    }
+
     let todoList = article.todo;
     todoListHtml.innerText = "";
+
     for (const todo of todoList) {
         let task = document.createElement("div");
         task.setAttribute("class", "task");
@@ -81,6 +87,7 @@ function renderToDoList(article) {
         let checkbox = document.createElement("input");
         checkbox.setAttribute("type", "checkbox");
         checkbox.setAttribute("class", "task-input-checkbox");
+        checkbox.setAttribute("value", todo.item);
         checkbox.checked = todo.checked;
 
         task.appendChild(checkbox);
@@ -97,6 +104,4 @@ function renderToDoList(article) {
 
         task.appendChild(trash);
     }
-
-
 }
