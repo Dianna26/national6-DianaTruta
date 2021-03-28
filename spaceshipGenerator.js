@@ -4,7 +4,9 @@ class Spaceship {
     constructor() {
     this.positionX = 0;
     this.positionY = 0;
+    this.runningEngine = false;
     this.generateHtmlRef();
+    this.setStartEngine();
     this.setMoveSpaceship();
     }
 
@@ -28,9 +30,30 @@ class Spaceship {
         return Math.floor(Math.random() * (max - min) ) + min;
     }
     
+    setStartEngine() {
+        this.ref.addEventListener("click", () => {
+          this.startEngine();
+        });
+
+        this.ref.addEventListener("dblclick", () => {
+            this.runningEngine = false;
+        })
+
+    }
+
+      startEngine() {
+        if (!this.runningEngine) {
+          this.runningEngine = true;
+          console.log("Engine is starting");
+          this.ref.classList.add("spaceship--start");
+        }
+      }
+
     setMoveSpaceship() {
         document.addEventListener("keydown", (event) => {
-            this.moveSpaceship(event.key);
+            if (this.runningEngine) {
+                this.moveSpaceship(event.key);
+            }
         });
     }
 
