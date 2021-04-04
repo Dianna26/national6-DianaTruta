@@ -10,6 +10,14 @@ body {
   align-items: center;
   justify-content: center;
 }
+.lives {
+  width: 25px;
+  height: 25px;
+  top: -270px;
+  right: 550px;
+  position: relative;
+
+}
 
 #game-scene {
   width: 1000px;
