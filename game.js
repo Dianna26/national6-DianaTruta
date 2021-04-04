@@ -84,7 +84,6 @@ class ObstacleFactory {
       return true;
     });
   }
-
  
   moveObstacles() {
     for (const obstacle of this.obstacles) {
@@ -122,19 +121,26 @@ document.addEventListener("keyup", (event) => {
 
 function collisionDetection(player, obstacles) {
   for (const obstacle of obstacles) {
-    console.log(player.x, obstacle.x);
+    // console.log(player.x, obstacle.x);
 
-    if (
-      (player.x <= obstacle.x &&
-        obstacle.x <= player.x + player.width &&
-        player.y <= obstacle.y &&
-        obstacle.y <= player.y + player.height) ||
-      (player.x <= obstacle.x + obstacle.width &&
-        obstacle.x + obstacle.width <= player.x + player.width &&
-        player.y <= obstacle.y + obstacle.height &&
-        obstacle.y + obstacle.height <= player.y + player.height)
-    )
-      return true;
+    // if (
+    //   (player.x <= obstacle.x &&
+    //     obstacle.x <= player.x + player.width &&
+    //     player.y <= obstacle.y &&
+    //     obstacle.y <= player.y + player.height) ||
+    //   (player.x <= obstacle.x + obstacle.width &&
+    //     obstacle.x + obstacle.width <= player.x + player.width &&
+    //     player.y <= obstacle.y + obstacle.height &&
+    //     obstacle.y + obstacle.height <= player.y + player.height)
+    // )
+
+    if (player.x < obstacle.x + obstacle.width &&
+      player.x + player.width > obstacle.x &&
+      player.y < obstacle.y + obstacle.height &&
+      player.y + player.height > obstacle.y
+      ){
+        return true;
+      }
   }
 
   return false;
@@ -148,6 +154,50 @@ const obstacleFactory = new ObstacleFactory();
 let count = 0;
 
 
+var LivesArray = ["heart.png", "heart.png","heart.png"];
+let i;
+let nrOfLives;
+class Lives {
+  constructor() {
+    this.refs = [];
+    this.generateLife();
+    nrOfLives = 3;
+    this.life = true;
+  }
+
+  generateLife() {
+    for (var i = 0; i < LivesArray.length; i++) {
+      this.ref = document.createElement("img");
+      this.ref.setAttribute("id", "heart-" + i);
+      this.ref.src = LivesArray[i] ;
+      this.ref.classList.add("lives");
+      document.body.appendChild(this.ref);
+      console.log(this.ref);
+      this.refs.push(this.ref);
+      console.log(this.refs);
+    };
+}
+
+  decreaseLife() {
+    if (collisionDetection(player, obstacleFactory.obstacles)) {
+      if (this.refs.length > 0 && this.life === true){
+        this.refs[this.refs.length - 1].remove();
+        this.refs.pop();
+        nrOfLives --;
+        this.life = false;
+        setTimeout( () => {this.life = true}, 2000);
+      }
+      if (this.refs.length === 0){
+        alert('GAME OVER');
+      }
+    }
+   
+  }
+}  
+
+var lives = new Lives();
+
+console.log(lives);
 
 let gameLoop = setInterval(() => {
   console.log(keyUpPress);
@@ -167,46 +217,50 @@ let gameLoop = setInterval(() => {
   //   clearInterval(gameLoop);
   //   alert("You hit an obstacle");
   //   window.location = "/";
-  // }
+  // }c
 
+  lives.decreaseLife();
 
   obstacleFactory.destroyObstacles();
 
   count++;
 }, 50);
 
-var LivesArray = ["heart.png", "heart.png","heart.png"];
-let i;
-let nrOfLives;
-class Lives {
-  constructor() {
-    this.refs = [];
-    this.generateLife();
-    nrOfLives = 3;
-  }
+// var LivesArray = ["heart.png", "heart.png","heart.png"];
+// let i;
+// let nrOfLives;
+// class Lives {
+//   constructor() {
+//     this.refs = [];
+//     this.generateLife();
+//     nrOfLives = 3;
+//   }
 
-  generateLife() {
-    for (var i = 0; i < LivesArray.length; i++) {
-      this.ref = document.createElement("img");
-      this.ref.src = LivesArray[i] ;
-      this.ref.classList.add("lives");
-      document.body.appendChild(this.ref);
-      console.log(this.ref);
-      this.refs.push(this.ref);
-      console.log(this.refs);
-    };
-}
+//   generateLife() {
+//     for (var i = 0; i < LivesArray.length; i++) {
+//       this.ref = document.createElement("img");
+//       this.ref.setAttribute("id", "heart-" + i);
+//       this.ref.src = LivesArray[i] ;
+//       this.ref.classList.add("lives");
+//       document.body.appendChild(this.ref);
+//       console.log(this.ref);
+//       this.refs.push(this.ref);
+//       console.log(this.refs);
+//     };
+// }
 
-  decreaseLife() {
-    if (collisionDetection(player, obstacleFactory.obstacles)) {
-      this.refs[this.refs.length - 1].remove();
-      this.refs.pop();
-      nrOfLives --;
-    }
+//   decreaseLife() {
+//     if (collisionDetection(player, obstacleFactory.obstacles)) {
+//       console.log("Lalala");
+//       this.refs[this.refs.length - 1].remove();
+//       this.refs.pop();
+//       console.log(this.refs);
+//       nrOfLives --;
+//     }
    
-  }
-}  
+//   }
+// }  
 
-var lives = new Lives();
+// var lives = new Lives();
 
-console.log(lives);
+// console.log(lives);
