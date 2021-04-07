@@ -1,7 +1,7 @@
 {
   "name": "national6-diana",
   "version": "1.0.0",
-  "description": "Project",
+  "description": "project of scit",
   "main": "script.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/Dianna26/national6-DianaTruta#readme",
   "dependencies": {
-    "lodash": "^4.17.21"
+    "lodash": "^4.17.21",
+    "webpack": "^5.30.0"
   }
 }
