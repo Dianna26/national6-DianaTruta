@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import './style.css';
+import {renderArticle} from './renderArticle.js';
 
 console.log("JavaScript - Dogs App");
 
@@ -24,37 +25,7 @@ function getData() {
 }
 
 
-function renderArticle(listOfBreeds) {
-  listOfBreeds = Object.keys(listOfBreeds.message);
-  for (let breedName of listOfBreeds) {
-    renderBreedName(breedName);
-  }
-}
-
 getData();
-let breedNameGlobal;
-function renderBreedName(breedName) {
-  breedNameGlobal = breedName;
-  const breedNameParagraph = document.createElement("p");
-  breedNameParagraph.innerText = breedName;
-  breedNameParagraph.setAttribute("id", breedName);
-  breedNameParagraph.addEventListener("click", renderDogImage);
-  document.getElementById("breeds").appendChild(breedNameParagraph);
-}
-
-function renderDogImage(event) {
-  event.currentTarget.style.textDecoration = "underline";
-  fetch("https://dog.ceo/api/breed/" + event.currentTarget.innerText + "/images/random/5")
-    .then((r) => r.json())
-    .then(displayImage);
-}
-
-function displayImage(result) {
-  let breedImage = document.getElementById("breed-image");
-  breedImage.setAttribute("src", result.message[0]);
-  localStorage.setItem("breedImages", JSON.stringify(result.message));
-  localStorage.setItem("breedImageIndex", 0);
-}
 
 document.getElementById("forward").addEventListener("click", function () {
   let images = JSON.parse(localStorage.getItem("breedImages"));
