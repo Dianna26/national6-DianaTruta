@@ -6,8 +6,8 @@ import { MenuFlyout } from "./Menu/MenuFlyout/MenuFlyout";
 export function Header() {
   return (
     <div className="app-header">
-      <MenuFlyout />
       <MenuButton />
+      <MenuFlyout />
       <AppLogo />
       <p className="app-header__title">To Do App</p>
     </div>
