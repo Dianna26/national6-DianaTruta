@@ -1,0 +1,5 @@
+.send-container {
+    display:flexbox;
+    margin-left: 500px;
+    justify-content: flex-end;
+  }

@@ -1,0 +1,19 @@
+.contact-form-field {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .contact-form-field p {
+    width: 150px;
+  }
+  
+  .contact-form-field:nth-child(4) {
+    align-items: flex-start;
+  }
+  
+  .contact-form-field textarea {
+    width: 300px;
+    height: 300px;
+    padding: 5px;
+  }
